@@ -28,12 +28,16 @@ http://www.meinshop.de/hardware/grafikkarten/matrox-g200-mms
 
 WICHTIG:
 Die URLs werden nicht automatisch umgeschrieben. 
+
 Wenn der Shop bereits Kategorien enthält, dann müssen Sie bei JEDER Kategorie in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
 Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this box to have the URIs auto-generated for this category).
+
 Wenn der Shop bereits Artikel enthält, dann müssen Sie bei JEDEM Artikel in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
 Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this box to have the URIs auto-generated for this product).
+
 Wenn der Shop bereits EZ Pages enthält, dann müssen Sie bei JEDER EZ Page in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
 Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this box to have the URIs auto-generated for this EZ-Page).
+
 Wenn der Shop bereits Hersteller enthält, dann müssen Sie bei JEDEM Hersteller in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
 Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this box to have the URIs auto-generated for this manufacturer.).
 
