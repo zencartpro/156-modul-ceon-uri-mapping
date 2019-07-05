@@ -10,7 +10,7 @@ Changelog 5.0.0
 * Juli 2019
 * Komplette Überarbeitung des Moduls durch das CEON Team für Kompatibilität mit 1.5.6 und PHP 7.3
 * Fast keine Änderung von Corefiles mehr nötig
-* Anpassungen für Zne Cart 1.5.6 deutsch
+* Anpassungen für Zen Cart 1.5.6 deutsch
 * Nicht funktionierenden Update Check entfernt
 * Anleitung aktualisiert
 
