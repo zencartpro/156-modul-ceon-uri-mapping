@@ -1,0 +1,123 @@
+CEON URI Mappings 5.0.0 für Zen Cart 1.5.6 deutsch
+
+Dieses Modul erlaubt das benutzerdefinierte Umschreiben der URLs in Zen Cart.
+Anders als bei anderen Modulen dieser Art, erfolgt das Umschreiben nicht automatisch, sondern es kann jede URL per Admin eigens definiert werden, was eine völlige Kontrolle über die vom Shop verwendeten URLs ermöglicht.
+
+Version 5.0.0 ist ausschließlich für Zen Cart 1.5.6 deutsch geeignet
+
+Changelog 5.0.0
+Juli 2019
+Komplette Überarbeitung des Moduls durch das CEON Team für Kompatibilität mit 1.5.6 und PHP 7.3
+Fast keine Änderung von Corefiles mehr nötig
+Anpassungen für Zne Cart 1.5.6 deutsch
+Nicht funktionierenden Update Check entfernt
+Anleitung aktualisiert
+
+Hinweis:
+Das Modul ist nicht übersetzt, alle Texte in der Administration sind englisch.
+Auch die extrem umfangreiche Doku, die beiliegt ist englisch.
+
+Beispiel für die URL einer Artikeldetailseite:
+
+Original Link:
+http://www.meinshop.de/index.php?main_page=product_info&cPath=1_4&products_id=1
+
+Umgeschriebener Link:
+http://www.meinshop.de/hardware/grafikkarten/matrox-g200-mms
+
+WICHTIG:
+Die URLs werden nicht automatisch umgeschrieben. 
+Wenn der Shop bereits Kategorien enthält, dann müssen Sie bei JEDER Kategorie in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
+Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this box to have the URIs auto-generated for this category).
+Wenn der Shop bereits Artikel enthält, dann müssen Sie bei JEDEM Artikel in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
+Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this box to have the URIs auto-generated for this product).
+Wenn der Shop bereits EZ Pages enthält, dann müssen Sie bei JEDER EZ Page in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
+Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this box to have the URIs auto-generated for this EZ-Page).
+Wenn der Shop bereits Hersteller enthält, dann müssen Sie bei JEDEM Hersteller in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
+Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this box to have the URIs auto-generated for this manufacturer.).
+
+
+
+NEUINSTALLATION
+
+Dieses Modul ist nur für Zen Cart 1.5.6 deutsch geeignet und ändert einige wichtige Corefiles.
+Es ist kein Modul, das Sie in 2 Minuten einfach hochladen können.
+Da das Modul englisch ist, sollten Sie gute Englischkenntnisse haben
+
+Für den Einbau dieses Moduls sollten Sie über folgende Werkzeuge verfügen:
+
+1) Ein guter Texteditor.
+Damit ist nicht das in Windows enthaltene Notepad oder Microsoft Word gemeint.
+Sie benötigen einen Texteditor, der utf-8 versteht und auch im Format utf-8 ohne BOM abspeichern kann.
+Empfehlung: UltraEdit (kostenlose 30 Tage Testversion verfügbar)
+Ebenfalls gut geeignet ist der kostenlose Texteditor Notepad++
+
+2) Ein Tool zum Vergleichen von Dateien
+Bei der Installation dieses Moduls ist es erforderlich, dass Sie den Inhalt einiger Ihrer bestehenden Zen Cart Dateien mit dem Inhalt der neuen Moduldateien vergleichen und die Änderungen zusammenführen ("mergen").
+Empfehlung: BeyondCompare (kostenlose 30 Tage Testversion verfügbar)
+Ebenfalls gut geeignet ist das kostenlose Programm WinMerge
+
+Empfehlung:
+
+Dieses Modul erst in einem Testsystem einbauen und dort konfigurieren/testen und endgültig an die eigenen Wünsche anpassen. Erst dann in einem Liveshop einsetzen! Sichern Sie unbedingt alle Dateien Ihres Shops per FTP und sichern Sie die Datenbank mit phpMyAdmin oder anderen geeigneten Tools!
+WICHTIG
+Vor dem Einbau dieser Änderungen:
+BACKUP von Shop und Datenbank machen!
+Keine Haftung, Verwendung auf eigene Gefahr!
+BACKUP gemacht? Ok, dann weiterlesen...
+
+Die Installation erfolgt in folgenden Schritten. Halten Sie diesen Ablauf ein!
+
+1)
+Die install.sql im Ordner SQL mit einem Texteditor öffnen und den Inhalt kopieren.
+Inhalt ins Eingabefeld in der Zen Cart Administration unter Tools > SQL Patches installieren kopieren und absenden.
+Dadurch werden 3 neue Datenbanktabellen angelegt
+
+2)
+Im Ordner GEAENDERTE DATEIEN den Ordner DEINADMIN auf den Namen des Admin Verzeichnisses umbenennen.
+Den Ordner DEINTEMPLATE auf den Namen des im Shop aktiven Templates umbenennen.
+Falls Sie im Shop das responsive Standardtemplate responsive_classic verwenden, dann verwenden Sie stattdessen den Ordner DEINTEMPLATE_RESPONSIVE.
+Wenn Sie Zen Cart 1.5.6 gerade frisch installiert haben und noch keinerlei Änderungen an den Dateien vorgenommen haben, können Sie nun alle Dateien/Ordner aus dem Ordner GEAENDERTE DATEIEN in der vorgegebenen Struktur in die Zen Cart Installation hochladen. Dabei werden dann etliche Dateien überschrieben.
+Wenn Sie Zen Cart 1.5.6 schon länger im Einsatz haben und schon einmal Änderungen an Dateien vorgenommen oder andere Module eingebaut haben, dann laden Sie die Dateien keinesfalls einfach hoch.
+Vergleichen Sie alle Dateien im Ordner GEAENDERTE DATEIEN mit den entsprechenden Dateien in Ihrem Shop und nehmen Sie die Änderungen manuell per WinMerge oder BeyondCompare vor.
+Dann spielen Sie die geänderten Dateien in der gezeigten Struktur ein.
+
+3)
+Im Ordner NEUE DATEIEN den Ordner DEINADMIN auf den Namen des Admin Verzeichnisses umbenennen.
+Dann in der vorgegebenen Struktur hochladen, dabei werden keine bestehenden Dateien überschrieben
+
+4)
+In die Zen Cart Administration einloggen und auf irgendeinen Menüpunkt clicken.
+Sie sollten nun unter Module den neuen Menüpunkt CEON URI Mapping (SEO) Konfiguration haben.
+Clicken Sie ihn an, Sie sollten nun Erfolgsmeldungen sehen, dass das Modul erfolgreich installiert wurde
+
+5)
+Gehen Sie hier auf Installation Check
+Unten wird der Inhalt für die benötigte .htaccess Datei angezeigt
+Erstellen Sie eine .htaccess mit dem angezeigten Inhalt 
+WICHTIG:
+Fügen Sie einen zusätzlichen Eintrag ein, um die Minify Funktionalität im Ordner extras nicht zu beeinträchtigen:
+# Don't rewrite extras directory
+RewriteCond %{REQUEST_URI} !^/xxx/extras/ [NC]
+Laden Sie diese .htaccess ins Shopverzeichnis hoch.
+
+Stellen Sie unter URI Auto-generation Settings nach Ihren Wünschen ein
+
+6)
+Unter Konfiguration ist nun ein neuer Menüpunkt CEON URI Mapping (SEO) vorhanden, mit dem das Umschreiben der URLs ein- und ausgeschaltet werden kann
+
+WICHTIG:
+Die URLs werden nicht automatisch umgeschrieben. 
+Wenn der Shop bereits Kategorien enthält, dann müssen Sie bei JEDER Kategorie in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
+Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this box to have the URIs auto-generated for this category).
+Wenn der Shop bereits Artikel enthält, dann müssen Sie bei JEDEM Artikel in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
+Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this box to have the URIs auto-generated for this product).
+Wenn der Shop bereits EZ Pages enthält, dann müssen Sie bei JEDER EZ Page in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
+Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this box to have the URIs auto-generated for this EZ-Page).
+Wenn der Shop bereits Hersteller enthält, dann müssen Sie bei JEDEM Hersteller in die Bearbeitung gehen und unten bei URI Mapping eine gewünschte URL vergeben.
+Oder einfach das automatische Vergeben einer URL angekreuzt lassen (TTick this box to have the URIs auto-generated for this manufacturer.).
+
+Das Umschreiben von Define Pages (z.B. index.php?main_page=privacy) ist möglich, aber nicht admingesteuert.
+Die gewünschten Links für solche Define Pages können direkt in der Datenbank gesetzt werden (siehe englische Dokumentation)
+
+Lesen Sie die umfangreiche Doku im Ordner DOKU ENGLISCH, um sich mit dem Modul und seinen Möglichkeiten vertraut zu machen.
