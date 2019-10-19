@@ -43,7 +43,7 @@ class CeonURIMappingLinkBuildAdmin extends base
 				if ($connection == 'NONSSL') {
 						$link = HTTP_SERVER;
 				} elseif ($connection == 'SSL') {
-						if (ENABLE_SSL == 'true') {
+						if (ENABLE_SSL_CATALOG == 'true') {
 								$link = HTTPS_SERVER;
 						} else {
 								$link = HTTP_SERVER;
