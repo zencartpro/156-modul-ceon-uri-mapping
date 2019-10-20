@@ -6,13 +6,12 @@
  *
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
- * @author      torvista
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2007 Zen Cart Development Team
+ * @copyright   Copyright 2003-2019 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
- * @link        https://ceon.net
+ * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     2016
+ * @version     $Id: class.CeonURIMappingLinkBuildAdmin.php 2019-10-20 12:43:10Z webchills $
  */
 class CeonURIMappingLinkBuildAdmin extends base
 {
@@ -41,14 +40,14 @@ class CeonURIMappingLinkBuildAdmin extends base
 				}
 
 				if ($connection == 'NONSSL') {
-						$link = HTTP_SERVER;
-				} elseif ($connection == 'SSL') {
-						if (ENABLE_SSL_CATALOG == 'true') {
-								$link = HTTPS_SERVER;
-						} else {
-								$link = HTTP_SERVER;
-						}
-				}
+                        $link = HTTP_CATALOG_SERVER;
+                } elseif ($connection == 'SSL') {
+                        if (ENABLE_SSL_CATALOG == 'true') {
+                                $link = HTTPS_CATALOG_SERVER;
+                        } else {
+                                $link = HTTP_CATALOG_SERVER;
+                        }
+                }
 
 				if ($ceon_uri_mapping_href_link_builder->buildHREFLink($link, $page, $parameters, $connection, false)) {
 						$link = $ceon_uri_mapping_href_link_builder->getHREFLink();
