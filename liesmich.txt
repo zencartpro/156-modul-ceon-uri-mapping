@@ -8,6 +8,8 @@ Version 5.0.1 ist ausschließlich für Zen Cart 1.5.6 deutsch geeignet
 Changelog 5.0.1
 Juli 2020
 Geänderte Datei html_header.php auf den Stand von 1.5.6e gebracht
+Fix für too many redirects bei HostEurope
+ENABLE_SSL_CATALOG statt ENABLE_SSL
 
 Changelog 5.0.0
 Juli 2019
