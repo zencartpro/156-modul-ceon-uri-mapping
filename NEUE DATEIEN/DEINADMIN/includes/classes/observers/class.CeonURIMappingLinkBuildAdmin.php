@@ -6,12 +6,13 @@
  *
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
+ * @author      torvista
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
- * @link        http://ceon.net/software/business/zen-cart/uri-mapping
+ * @link        https://ceon.net
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingLinkBuildAdmin.php 2019-10-20 12:43:10Z webchills $
+ * @version     $Id: class.CeonURIMappingLinkBuildAdmin.php 2021-06-23 09:43:10Z webchills $
  */
 class CeonURIMappingLinkBuildAdmin extends base
 {
@@ -20,7 +21,7 @@ class CeonURIMappingLinkBuildAdmin extends base
 				$this->attach($this, array('NOTIFY_SEFU_INTERCEPT_ADMCATHREF'));
 		}
 
-		public function updateNotifySEFUInterceptAdmcathref(&$callingClass, $notifier, $p1, &$link, $page, $parameters, $connection)//can use "update" or camelized notifier name. & required for &$link to modify it inside here
+		public function notify_sefu_intercept_admcathref(&$callingClass, $notifier, $p1, &$link, $page, $parameters, $connection)//can use "update" or camelized notifier name. & required for &$link to modify it inside here
 		{
 				if (!isset($link) && !isset($page) && !isset($parameters) && !isset($connection) && !isset($_SESSION['NotifySEFUInterceptAdmcathref'])) {
 						trigger_error('System not updated to handle editable notifier parameters.  Need to properly update the operating system.  This message will not be repeated for this session.', E_USER_WARNING);
@@ -40,14 +41,14 @@ class CeonURIMappingLinkBuildAdmin extends base
 				}
 
 				if ($connection == 'NONSSL') {
-                        $link = HTTP_CATALOG_SERVER;
-                } elseif ($connection == 'SSL') {
-                        if (ENABLE_SSL_CATALOG == 'true') {
-                                $link = HTTPS_CATALOG_SERVER;
-                        } else {
-                                $link = HTTP_CATALOG_SERVER;
-                        }
-                }
+						$link = defined('HTTP_CATALOG_SERVER') ? HTTP_CATALOG_SERVER : HTTP_SERVER;
+				} elseif ($connection == 'SSL') {
+						if (ENABLE_SSL_CATALOG == 'true') {
+								$link = defined('HTTPS_CATALOG_SERVER') ? HTTPS_CATALOG_SERVER : (defined('HTTPS_SERVER') ? HTTPS_SERVER : HTTP_SERVER);
+						} else {
+								$link = defined('HTTP_CATALOG_SERVER') ? HTTP_CATALOG_SERVER : HTTP_SERVER;
+						}
+				}
 
 				if ($ceon_uri_mapping_href_link_builder->buildHREFLink($link, $page, $parameters, $connection, false)) {
 						$link = $ceon_uri_mapping_href_link_builder->getHREFLink();
@@ -56,8 +57,12 @@ class CeonURIMappingLinkBuildAdmin extends base
 				}
 		}
 
-		public function update(&$callingClass, $notifier, $p1, &$link = null, $page = null, $parameters = null, $connection = null)//can use "update" or camelized notifier name. & required for &$link to modify it inside here
+		public function updateNotifySEFUInterceptAdmcathref(&$callingClass, $notifier, $p1, &$link, $page, $parameters, $connection)//can use "update" or camelized notifier name. & required for &$link to modify it inside here
+		{
+				$this->notify_sefu_intercept_admcathref($callingClass, $notifier, $p1, $link, $page, $parameters, $connection);
+		}
 
+		public function update(&$callingClass, $notifier, $p1, &$link = null, $page = null, $parameters = null, $connection = null)//can use "update" or camelized notifier name. & required for &$link to modify it inside here
 		{
 				if (!isset($link) && !isset($page) && !isset($parameters) && !isset($connection) && !isset($_SESSION['NotifySEFUInterceptAdmcathref'])) {
 						trigger_error('System not updated to handle editable notifier parameters.  Need to properly update the operating system.  This message will not be repeated for this session.', E_USER_WARNING);
@@ -65,7 +70,7 @@ class CeonURIMappingLinkBuildAdmin extends base
 				}
 				
 				if (!isset($_SESSION['NotifySEFUInterceptAdmcathref'])) {
-					$this->updateNotifySEFUInterceptAdmcathref($callingClass, $notifier, $p1, $link, $page, $parameters, $connection);
+					$this->notify_sefu_intercept_admcathref($callingClass, $notifier, $p1, $link, $page, $parameters, $connection);
 				}
 		}
 }

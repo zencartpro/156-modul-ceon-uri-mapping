@@ -6,10 +6,10 @@
  * outputs the html header. i,e, everything that comes before the \</head\> tag <br />
  *
  * @package templateSystem
- * @copyright Copyright 2003-2019 Zen Cart Development Team
+ * @copyright Copyright 2003-2021 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
- * @license http://www.zen-cart-pro.at/license/2_0.txt GNU Public License V2.0
- * @version $Id: html_header.php for CEON Uri Mapping 2019-07-04 16:55:39Z webchills $
+ * @license https://www.zen-cart-pro.at/license/3_0.txt GNU General Public License V3.0
+ * @version $Id: html_header.php for CEON Uri Mapping 2021-06-23 10:19:39Z webchills $
  */
 $zco_notifier->notify('NOTIFY_HTML_HEAD_START', $current_page_base, $template_dir);
 
@@ -54,7 +54,7 @@ if (!class_exists('Mobile_Detect')) {
   <meta name="description" content="<?php echo META_TAG_DESCRIPTION; ?>" />
   <meta name="language" content="<?php echo META_TAG_LANGUAGE; ?>" />
   <meta name="author" content="<?php echo STORE_NAME ?>" />
-  <meta name="generator" content="Zen-Cart 1.5.5 - deutsche Version, http://www.zen-cart-pro.at" />
+  <meta name="generator" content="Zen-Cart 1.5.6 - deutsche Version, http://www.zen-cart-pro.at" />
 <?php if (defined('ROBOTS_PAGES_TO_SKIP') && in_array($current_page_base,explode(",",constant('ROBOTS_PAGES_TO_SKIP'))) || $current_page_base=='down_for_maintenance' || $robotsNoIndex === true) { ?>
   <meta name="robots" content="noindex, nofollow" />
 <?php } ?>
@@ -103,7 +103,7 @@ window[disableStr] = true; }
 <?php if (FACEBOOK_OPEN_GRAPH_STATUS == 'true') { ?>
 <?php require($template->get_template_dir('facebook_open_graph.php',DIR_WS_TEMPLATE, $current_page_base,'templates'). '/facebook_open_graph.php'); ?>
 <?php } ?>
-<script type="text/javascript">window.jQuery || document.write(unescape('%3Cscript type="text/javascript" src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"%3E%3C/script%3E'));</script>
+<script type="text/javascript">window.jQuery || document.write(unescape('%3Cscript type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4" crossorigin="anonymous"%3E%3C/script%3E'));</script>
 <?php if (file_exists(DIR_WS_TEMPLATE . "jscript/jquery.min.js")) { ?>
 <script type="text/javascript">window.jQuery || document.write(unescape('%3Cscript type="text/javascript" src="<?php echo $template->get_template_dir('.js',DIR_WS_TEMPLATE, $current_page_base,'jscript'); ?>/jquery.min.js"%3E%3C/script%3E'));</script>
 <?php } ?>

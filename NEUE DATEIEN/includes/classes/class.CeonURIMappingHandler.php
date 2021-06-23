@@ -2,15 +2,15 @@
 
 /**
  * Ceon URI Mapping URI Handler Class. 
- *
+ * Zen Cart German Specific
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingHandler.php 1054 2012-09-22 15:45:15Z conor $
+ * @version     $Id: class.CeonURIMappingHandler.php 1055 2021-06-23 09:59:15Z webchills $
  */
 
 if (!defined('IS_ADMIN_FLAG')) {
@@ -61,8 +61,8 @@ class CeonURIMappingHandler extends CeonURIMappingHandlerBase
 	 * Attempts to match the current URI against a static URI in the Ceon URI Mapping database.
 	 *
 	 * @access  protected
+	 * @return  void
 	 * @author  Conor Kerr <zen-cart.uri-mapping@ceon.net>
-	 * @return  none
 	 */
 	protected function _handleStaticURI()
 	{
@@ -153,10 +153,10 @@ class CeonURIMappingHandler extends CeonURIMappingHandlerBase
 			$mapping_info = $other_mappings[0];
 		}
 		
-		$language_id = $mapping_info['language_id'];
+		$language_id = (int)$mapping_info['language_id'];
 		$main_page = $mapping_info['main_page'];
 		$query_string_parameters = $mapping_info['query_string_parameters'];
-		$associated_db_id = $mapping_info['associated_db_id'];
+		$associated_db_id = is_null($mapping_info['associated_db_id']) ? null : (int)$mapping_info['associated_db_id'];
 		$alternate_uri = $mapping_info['alternate_uri'];
 		$current_uri = $mapping_info['current_uri'];
 		$redirection_type_code = $mapping_info['redirection_type_code'];
@@ -355,8 +355,8 @@ class CeonURIMappingHandler extends CeonURIMappingHandlerBase
 					$_GET['main_page'] = FILENAME_EZPAGES;
 				}
 				
-				$_GET['id'] = $associated_db_id;
-				
+				$_GET['id'] = $associated_db_id;				
+						
 			} else {
 				// This is a product related page
 				if (isset($_GET['products_id']) && strpos($_GET['products_id'], ':') !== false) {
@@ -396,6 +396,9 @@ class CeonURIMappingHandler extends CeonURIMappingHandlerBase
 				isset($_GET['reviews_id'])) {
 			$ceon_uri_mapping_canonical_uri .= '?reviews_id=' . $_GET['reviews_id'];
 		}
+		if (isset($GLOBALS['zco_notifier'])) {
+			$GLOBALS['zco_notifier']->notify('CEON_CLASS_HANDLER_HANDLE_STATIC_URI_END', compact('mapping_info', 'uri_to_match'));
+		}
 	}
 	
 	// }}}
@@ -413,7 +416,7 @@ class CeonURIMappingHandler extends CeonURIMappingHandlerBase
 	 */
 	protected function _handleZCDynamicURI()
 	{
-		global $db, $ceon_uri_mapping_product_pages, $ceon_uri_mapping_product_related_pages;
+		global /*$db, */$ceon_uri_mapping_product_pages, $ceon_uri_mapping_product_related_pages;
 		
 		$associated_db_id = null;
 		$query_string_to_match = null;
@@ -440,10 +443,10 @@ class CeonURIMappingHandler extends CeonURIMappingHandlerBase
 			}
 		} else if (in_array($_GET['main_page'], $ceon_uri_mapping_product_pages) ||
 				in_array($_GET['main_page'], $ceon_uri_mapping_product_related_pages)) {
-			$associated_db_id = $_GET['products_id'];
+			$associated_db_id = !empty($_GET['products_id']) ? $_GET['products_id'] : (!empty($_GET['pid']) ? $_GET['pid'] : 0);
 			
 		} else if ($_GET['main_page'] == FILENAME_EZPAGES || $_GET['main_page'] == FILENAME_EZPAGES_POPUP) {
-			$associated_db_id = $_GET['id'];
+			$associated_db_id = !empty($_GET['id']) ? $_GET['id'] : 0;
 			
 		} else if ((count($_GET) > 1 && !isset($_GET[zen_session_name()])) ||
 				(isset($_GET[zen_session_name()]) && count($_GET) > 2)) {
@@ -499,7 +502,7 @@ class CeonURIMappingHandler extends CeonURIMappingHandlerBase
 						unset($_GET['cPath']);
 					}
 					
-					unset($_GET['products_id']);
+					unset($_GET['products_id'], $_GET['pid']);
 					
 				} else if ($_GET['main_page'] == FILENAME_EZPAGES ||
 						$_GET['main_page'] == FILENAME_EZPAGES_POPUP) {
@@ -593,6 +596,7 @@ class CeonURIMappingHandler extends CeonURIMappingHandlerBase
 					
 					break;
 					
+				
 				default:
 					// This is a product related page
 					$_GET['products_id'] = $associated_db_id;

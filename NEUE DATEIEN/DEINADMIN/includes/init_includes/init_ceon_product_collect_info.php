@@ -1,11 +1,11 @@
 <?php
 /**
  * @package Ceon URI Mapping
- * @copyright Copyright 2003-2019 Zen Cart Development Team
+ * @copyright Copyright 2003-2021 Zen Cart Development Team
  * @author Ceon Support
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * $Id: init_ceon_product_collect_info.php xxxx 2019-01-02 20:31:10Z $
+ * $Id: init_ceon_product_collect_info.php 2021-06-23 09:48:10Z $
  */
 
 // copy_product_confirm perform
@@ -14,6 +14,11 @@
 // THIS CODE DOES NOT NEED TO BE IN THE GLOBAL SPACE, BUT IT NEEDS TO ACT ACCORDINGLY.
 if (defined('FILENAME_CATEGORY_PRODUCT_LISTING') && $_SERVER['SCRIPT_NAME'] == DIR_WS_ADMIN . (!strstr(FILENAME_CATEGORY_PRODUCT_LISTING, '.php') ? FILENAME_CATEGORY_PRODUCT_LISTING . '.php' : FILENAME_CATEGORY_PRODUCT_LISTING) && (isset($_SESSION['ceon_uri_mapping_copy_product_confirm']) )) {
 	
+	if (!empty($CeonURIMappingAdminCopy_Observe->ceon_uri_mapping_copy_product_confirmed)) {
+		unset($CeonURIMappingAdminCopy_Observe->ceon_uri_mapping_copy_product_confirmed);
+		unset($_SESSION['ceon_uri_mapping_copy_product_confirm']);
+		return;
+	}
 	$_POST = $_SESSION['ceon_uri_mapping_copy_product_confirm'];
 	$products_id_from = (int)zen_db_prepare_input($_POST['products_id']);
 	

@@ -8,11 +8,11 @@
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingAdminCategoryPages.php 2019-07-05 07:45:15Z webchills $
+ * @version     $Id: class.CeonURIMappingAdminCategoryPages.php 2021-06-23 09:31:15Z webchills $
  */
 
 if (!defined('IS_ADMIN_FLAG')) {
@@ -284,7 +284,7 @@ class CeonURIMappingAdminCategoryPages extends CeonURIMappingAdminCategories
 	 * @param   integer   $category_id   The ID of the category.
 	 * @return  none
 	 */
-	public function addURIMappingFieldsToEditCategoryForm($category_id)
+	public function addURIMappingFieldsToEditCategoryForm($category_id, $dividerClass = array('label' => 'col-sm-3 control-label', 'input_field'=>'col-sm-9 col-md-6'))
 	{
 		global $contents;
 		
@@ -311,7 +311,7 @@ class CeonURIMappingAdminCategoryPages extends CeonURIMappingAdminCategories
 			$prev_uri_mappings_result->MoveNext();
 		}
 		
-		$uri_mapping_input_fields = $this->buildCategoryURIMappingFormFields($prev_uri_mappings);
+		$uri_mapping_input_fields = $this->buildCategoryURIMappingFormFields($prev_uri_mappings, $dividerClass);
 		
 		$contents[] = array('text' => $uri_mapping_input_fields);
 	}
@@ -414,7 +414,7 @@ class CeonURIMappingAdminCategoryPages extends CeonURIMappingAdminCategories
 	 * @param   array     $prev_uri_mappings   An array of the current values for the URI mappings, if any.
 	 * @return  string    The source for the input fields.
 	 */
-	public function buildCategoryURIMappingFormFields($prev_uri_mappings)
+	public function buildCategoryURIMappingFormFields($prev_uri_mappings, $dividerClass = array('label' => 'col-sm-3 control-label', 'input_field'=>'col-sm-9 col-md-6'))
 	{
 		global $languages;
 		
@@ -426,9 +426,9 @@ class CeonURIMappingAdminCategoryPages extends CeonURIMappingAdminCategories
 		
 		$uri_mapping_input_fields .= "\n\t\t" . '<div class="form-group">' . "\n\t\t\t";
 
-		$uri_mapping_input_fields .= zen_draw_label(CEON_URI_MAPPING_TEXT_CATEGORY_URI, 'prev-uri-mappings', 'class="col-sm-3 control-label"') . "\n\t\t\t";
+		$uri_mapping_input_fields .= zen_draw_label(CEON_URI_MAPPING_TEXT_CATEGORY_URI, 'prev-uri-mappings', 'class="' . $dividerClass['label'] . '"') . "\n\t\t\t";
 
-		$uri_mapping_input_fields .= '<div class="col-sm-9 col-md-6">' . "\n\t\t\t\t";
+		$uri_mapping_input_fields .= '<div class="' . $dividerClass['input_field'] . '">' . "\n\t\t\t\t";
 		
 		for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
 			$uri_mapping_input_fields .= '<div class="input-group">' . "\n\t\t\t\t\t";
@@ -443,7 +443,6 @@ class CeonURIMappingAdminCategoryPages extends CeonURIMappingAdminCategories
 			$uri_mapping_input_fields .= "\n\t\t\t\t\t";
 			$uri_mapping_input_fields .= '<div class="input-group">' . "\n\t\t\t\t\t\t";
 			$uri_mapping_input_fields .= '<span class="input-group-addon">' . "\n\t\t\t\t\t\t\t";
-;
 			
 			$uri_mapping_input_fields .= zen_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] .
 				'/images/' . $languages[$i]['image'], $languages[$i]['name']); // . '&nbsp;';

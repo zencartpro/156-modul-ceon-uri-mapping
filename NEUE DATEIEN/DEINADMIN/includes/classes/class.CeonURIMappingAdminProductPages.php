@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Ceon URI Mapping Zen Cart Products Admin Functionality.
  * Zen Cart German Specific
@@ -7,12 +6,12 @@
  *
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
- * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2008-2020 Ceon
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingAdminProductPages.php 2019-07-05 07:45:15Z webchills $
+ * @version     $Id: class.CeonURIMappingAdminProductPages.php 2021-06-23 13:07:15Z webchills $
  */
 
 if (!defined('IS_ADMIN_FLAG')) {
@@ -379,8 +378,8 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 	{
 		//global $db;
 		
-		$this->_prev_uri_mappings = $_POST['prev-uri-mappings'];
-		$this->_uri_mappings = $_POST['uri-mappings'];
+		$this->_prev_uri_mappings = isset($_POST['prev-uri-mappings']) ? $_POST['prev-uri-mappings'] : array();
+		$this->_uri_mappings = isset($_POST['uri-mappings']) ? $_POST['uri-mappings'] : array();
 		
 		$languages = zen_get_languages();
 		
@@ -727,7 +726,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 	 *
 	 * @access  public
 	 * @param   array     $language_info   An array of Zen Cart language info.
-	 * @return  none
+	 * @return  string
 	 */
 	public function productPreviewExportURIMappingInfo($language_info)
 	{
@@ -893,9 +892,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 		$page_types = array(
 			'product_reviews',
 			'product_reviews_info',
-			'product_reviews_write',
-			'tell_a_friend',
-			'ask_a_question'
+			'product_reviews_write'			
 			);
 		
 		$page_types_to_manage = array();
@@ -965,7 +962,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 					$messageStack->add_session($failure_message, 'error');
 				}
 				
-				// Now add the URI mappings for the review pages/tell-a-friend page for this product
+				// Now add the URI mappings for the review pages for this product
 				$base_uri = $uri . '/';
 				
 				// Get the language code for the mapping's language
@@ -1009,7 +1006,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 					$main_page = constant('FILENAME_' . strtoupper($page_type));
 					
 					$mapping_added =
-						$this->addURIMapping($uri, $languages[$i]['id'], $main_page, ($page_type == 'ask_a_question' ? 'products_id=' . (int) $product_id : null), $product_id);
+						$this->addURIMapping($uri, $languages[$i]['id'], $main_page, ($page_type == 'ask_a_question' ? 'pid=' . (int) $product_id : null), $product_id);
 					
 					if ($mapping_added == CEON_URI_MAPPING_ADD_MAPPING_SUCCESS) {
 						if ($insert_uri_mapping) {
@@ -1150,9 +1147,9 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 		}
 		
 		if ($product_has_mappings || $this->_autogenEnabled()) {
-			$uri_mapping_input_fields = zen_draw_separator('pixel_black.gif', '100%', '2');
+			$uri_mapping_input_fields = zen_draw_separator('pixel_black.gif', '0%', '2');
 			
-			$uri_mapping_input_fields .= "<p>" . CEON_URI_MAPPING_TEXT_DUPLICATE_PRODUCT_URI_MAPPING . '<br />';
+			$uri_mapping_input_fields .= "<h6>" . CEON_URI_MAPPING_TEXT_DUPLICATE_PRODUCT_URI_MAPPING . '</h6>';
 			
 			// Default to auto-generating URIs for product's copy
 			$autogen_selected = $this->_autogenEnabled();
@@ -1206,7 +1203,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 			
 			$uri_mapping_input_fields .= "</p>";
 			
-			$uri_mapping_input_fields .= zen_draw_separator('pixel_black.gif', '100%', '2');
+//			$uri_mapping_input_fields .= zen_draw_separator('pixel_black.gif', '100%', '2');
 			
 			return $uri_mapping_input_fields;
 		}
@@ -1277,9 +1274,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 			$page_types = array(
 				'product_reviews',
 				'product_reviews_info',
-				'product_reviews_write',
-				'tell_a_friend',
-				'ask_a_question'
+				'product_reviews_write'
 				);
 			
 			$page_types_to_manage = array();
@@ -1502,7 +1497,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 						$messageStack->add_session($failure_message, 'error');
 					}
 					
-					// Now add the URI mappings for the review pages/tell-a-friend page for this product
+					// Now add the URI mappings for the review pages for this product
 					$base_uri = $uri . '/';
 					
 					// Get the language code for the mapping's language
@@ -1523,7 +1518,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 						$main_page = constant('FILENAME_' . strtoupper($page_type));
 						
 						$mapping_added =
-							$this->addURIMapping($uri, $languages[$i]['id'], $main_page, ($page_type == 'ask_a_question' ? 'products_id=' . (int) $product_id_to : null), $product_id_to);
+							$this->addURIMapping($uri, $languages[$i]['id'], $main_page, ($page_type == 'ask_a_question' ? 'pid=' . (int) $product_id_to : null), $product_id_to);
 						
 						if ($mapping_added == CEON_URI_MAPPING_ADD_MAPPING_SUCCESS) {
 							$success_message = sprintf(CEON_URI_MAPPING_TEXT_PRODUCT_MAPPING_ADDED,
@@ -1695,7 +1690,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 	 * @param   integer   $product_type_id    The product's type ID.
 	 * @param   string    $product_type       The product's type (not its type ID).
 	 * @param   integer   $dest_category_id   The ID of the category the product is being moved to.
-	 * @return  none
+	 * @return  void
 	 */
 	public function moveProductConfirmHandler($product_id, $product_type_id, $product_type, $dest_category_id)
 	{
@@ -1720,9 +1715,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 		$page_types = array(
 			'product_reviews',
 			'product_reviews_info',
-			'product_reviews_write',
-			'tell_a_friend',
-			'ask_a_question'
+			'product_reviews_write'
 			);
 		
 		$page_types_to_manage = array();
@@ -1934,7 +1927,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 						$messageStack->add_session($failure_message, 'error');
 					}
 					
-					// Now add the URI mappings for the review pages/tell-a-friend page for this product
+					// Now add the URI mappings for the review pages for this product
 					$base_uri = $uri . '/';
 					
 					// Get the language code for the mapping's language
@@ -1978,7 +1971,7 @@ class CeonURIMappingAdminProductPages extends CeonURIMappingAdminProducts
 						$main_page = constant('FILENAME_' . strtoupper($page_type));
 						
 						$mapping_added = $this->addURIMapping($uri, $languages[$i]['id'],
-							$main_page, ($page_type == 'ask_a_question' ? 'products_id=' . (int)$product_id : null), $product_id);
+							$main_page, ($page_type == 'ask_a_question' ? 'pid=' . (int)$product_id : null), $product_id);
 						
 						if ($mapping_added == CEON_URI_MAPPING_ADD_MAPPING_SUCCESS) {
 							$success_message = sprintf(CEON_URI_MAPPING_TEXT_PRODUCT_MAPPING_ADDED,

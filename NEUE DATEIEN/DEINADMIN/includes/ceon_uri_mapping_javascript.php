@@ -3,16 +3,16 @@
  * This file is called by javascript_loader.php at the start of the body tag, just above the header menu, and loads most of the admin javascript components
  *
  * @package admin
- * @copyright Copyright 2003-2018 Zen Cart Development Team
+ * @copyright Copyright 2003-2021 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version $Id: Ceon Support Tue Jan 27 13:32:43 2019 -0400 New in v1.5.6 $
+ * @version $Id: ceon_uri_mapping_javascript.php 2021-06-23 09:49:05 webchills $
  */
 
 // displays the javascript necessary for
 // admin/product.php&action=new_product and
 // admin/product.php&action=update_product
-if (defined('FILENAME_PRODUCT') && $_SERVER['SCRIPT_NAME'] == DIR_WS_ADMIN . (!strstr(FILENAME_PRODUCT, '.php') ? FILENAME_PRODUCT . '.php' : FILENAME_PRODUCT) && isset($_GET['action']) && ($_GET['action'] == 'new_product' || $_GET['action'] == 'update_product')) {
+if (defined('FILENAME_PRODUCT') && $_SERVER['SCRIPT_NAME'] == DIR_WS_ADMIN . (!strstr(FILENAME_PRODUCT, '.php') ? FILENAME_PRODUCT . '.php' : FILENAME_PRODUCT) && isset($_GET['action']) && ($_GET['action'] == 'new_product' || $_GET['action'] == 'update_product' || ($_GET['action'] == 'insert_product' && empty($_GET['pID'])))) {
 	$ceon_class_name = 'form-group';
 ?>
 	<script>
@@ -21,6 +21,13 @@ window.onload = function(){
 	ceonUriMappingURI.setAttribute("class", "<?php echo $ceon_class_name; ?>");
 	ceonUriMappingURI.innerHTML = <?php
 	$languages = zen_get_languages();
+
+	if (empty($ceon_uri_mapping_admin) || !is_object($ceon_uri_mapping_admin)) {
+		if (!class_exists('CeonURIMappingAdminProductPages')) {
+			require_once(DIR_WS_CLASSES . 'class.CeonURIMappingAdminProductPages.php');
+		}
+		$ceon_uri_mapping_admin = empty($GLOBALS['ceon_uri_mapping_admin']) ? new CeonURIMappingAdminProductPages() : $GLOBALS['ceon_uri_mapping_admin'];
+	}
 	echo json_encode(utf8_encode($ceon_uri_mapping_admin->collectInfoBuildURIMappingForm())); ?>;
 	var classList = document.getElementsByClassName("<?php echo $ceon_class_name; ?>");
 	var place = classList[classList.length - 1];
@@ -49,6 +56,13 @@ window.onload = function(){
 	$languages = zen_get_languages();
 	
 	$ceonUriMappingPreview = '';
+	
+	if (empty($ceon_uri_mapping_admin) || !is_object($ceon_uri_mapping_admin)) {
+		if (!class_exists('CeonURIMappingAdminProductPages')) {
+			require_once(DIR_WS_CLASSES . 'class.CeonURIMappingAdminProductPages.php');
+		}
+		$ceon_uri_mapping_admin = empty($GLOBALS['ceon_uri_mapping_admin']) ? new CeonURIMappingAdminProductPages() : $GLOBALS['ceon_uri_mapping_admin'];
+	}
 	
 	for ($i = 0, $n = count($languages); $i < $n; $i++) {
 		$ceonUriMappingPreview .= $ceon_uri_mapping_admin->productPreviewExportURIMappingInfo($languages[$i]);
@@ -106,8 +120,8 @@ window.onload = function(){
 	// END CEON URI MAPPING 4 of 4
 	
 	$text_str = '';
-	foreach ($contents as $key => $value) {
-		$text_str .= $value['text'];
+	foreach ($GLOBALS['contents'] as $key => $value) {
+		$text_str .= isset($value['text']) ? $value['text'] : '';
 	}
 	
 	echo json_encode(utf8_encode($text_str));
@@ -152,7 +166,7 @@ window.onload = function(){
 	// END CEON URI MAPPING 3 of 4
 	
 	$text_str = '';
-	foreach ($contents as $key => $value) {
+	foreach ($GLOBALS['contents'] as $key => $value) {
 		$text_str .= $value['text'];
 	}
 	
@@ -189,6 +203,13 @@ window.onload = function(){
 
 	$languages = zen_get_languages();
 
+	if (empty($ceon_uri_mapping_admin) || !is_object($ceon_uri_mapping_admin)) {
+		if (!class_exists('CeonURIMappingAdminEZPagePages')) {
+			require_once(DIR_WS_CLASSES . 'class.CeonURIMappingAdminEZPagePages.php');
+		}
+		$ceon_uri_mapping_admin = empty($GLOBALS['ceon_uri_mapping_admin']) ? new CeonURIMappingAdminEZPagePages() : $GLOBALS['ceon_uri_mapping_admin'];
+	}
+
 	echo json_encode(utf8_encode($ceon_uri_mapping_admin->buildEZPageURIMappingFieldsForm()));
 	 ?>;
 	
@@ -222,22 +243,31 @@ window.onload = function(){
 	require_once(DIR_WS_CLASSES . 'class.CeonURIMappingAdminProductPages.php');
 	
 	$ceon_uri_mapping_admin = new CeonURIMappingAdminProductPages();
-	
+
+	$contents_start = 0;
+	if (!empty($GLOBALS['contents'])) {
+		$contents_start = count($GLOBALS['contents']) - 1;
+	}
 	$ceon_uri_mapping_admin->addURIMappingFieldsToProductCopyFieldsArray((int) $_GET['pID']);
 	
 	// END CEON URI MAPPING 1 of 1
 
 	$ceonUriMappingCopyProduct = '';
+	$contents = $GLOBALS['contents'];
 
-	for ($i = 0, $n = count($contents); $i < $n; $i++) {
+	for ($i = $contents_start, $n = count($contents) - 1; $i < $n; $i++) {
 		$ceonUriMappingCopyProduct .= $contents[$i]['text'];
 	}
 	echo json_encode(utf8_encode($ceonUriMappingCopyProduct));
 		?>;
 	
-	var classList = document.getElementsByClassName("row infoBoxContent");
-	var place = classList[5]; // Place after the nth instance of classList
-	
+	var classList = document.getElementsByName("copy_as");
+	for (var i = 0, n = classList.length; i < n; i++) { 
+		if (classList[i].value == "duplicate") {
+		   var place = classList[i].parentElement.parentElement.parentElement.nextElementSibling;
+		   break;
+		}
+	}
 	if (!classList.length) {
 		var formList = document.forms;
 		place = formList[formList.length - 1][formList[formList.length - 1].length - 1];
@@ -270,6 +300,7 @@ window.onload = function(){
 	// END CEON URI MAPPING 1 of 1
 	
 	$ceonUriMappingMoveProduct = '';
+	$contents = $GLOBALS['contents'];
 	
 	for ($i = 0, $n = count($contents); $i < $n; $i++) {
 		$ceonUriMappingMoveProduct .= $contents[$i]['text'];
@@ -313,7 +344,7 @@ window.onload = function(){
 	// END CEON URI MAPPING 2 of 3
 	
 	$text_str = '';
-	foreach ($contents as $key => $value) {
+	foreach ($GLOBALS['contents'] as $key => $value) {
 		$text_str .= $value['text'];
 	}
 	
@@ -353,10 +384,12 @@ window.onload = function(){
 	$ceon_uri_mapping_admin = new CeonURIMappingAdminCategoryPages();
 	
 	$ceon_uri_mapping_admin->addURIMappingFieldsToEditCategoryForm(
-		(int) $cInfo->categories_id);
+		(int) $GLOBALS['cInfo']->categories_id,
+		array('label' => 'col-sm-2 control-label', 'input_field'=>'col-sm-9 col-md-6')
+		);
 	
 	$text_str = '';
-	foreach ($contents as $key => $value) {
+	foreach ($GLOBALS['contents'] as $key => $value) {
 		$text_str .= $value['text'];
 	}
 	
@@ -365,7 +398,7 @@ window.onload = function(){
 ?>;
 
 	var classList = document.getElementsByClassName("form-group");
-	var place = classList[classList.length - 1];
+	var place = classList[0];
 	
 	if (!classList.length) {
 		var formList = document.forms;
@@ -398,10 +431,10 @@ window.onload = function(){
 	
 	//@TODO: need to change the formatting of this through a different function.
 	$ceon_uri_mapping_admin->addURIMappingFieldsToEditCategoryFieldsArray(
-		(int) $cInfo->categories_id);
+		(int) $GLOBALS['cInfo']->categories_id);
 	
 	$text_str = '';
-	foreach ($contents as $key => $value) {
+	foreach ($GLOBALS['contents'] as $key => $value) {
 		$text_str .= $value['text'];
 	}
 	

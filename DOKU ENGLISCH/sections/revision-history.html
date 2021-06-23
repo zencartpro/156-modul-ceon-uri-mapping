@@ -61,6 +61,46 @@ CeonAddLoadEvent(CeonCrossfadeInit);
 		<th>Release Information</th>
 	</tr>
 	<tr>
+		<td class="NoWrap"> 13th December 2020</td>
+		<td>5.1.0</td>
+		<td>
+			<p class="RevisionHistoryEntry">[ADDED] Use of Zen Cart 1.5.7 notifier for copying URIs when copying a product.</p>
+			<p class="RevisionHistoryEntry">[ADDED] Operation to modify date fields to comply with newer MySQL requirements.</p>
+			<p class="RevisionHistoryEntry">[ADDED] Admin handling for the parameter action value differences introduced in Zen Cart 1.5.7.</p>
+			<p class="RevisionHistoryEntry">[ADDED] Notifier CEON_CLASS_HANDLER_HANDLE_STATIC_URI_END to support adding rewrite rules similar to product reviews.</p>
+			<p class="RevisionHistoryEntry">[UPDATED] Admin product observer for readability and early termination.</p>
+			<p class="RevisionHistoryEntry">[BUGFIX] Admin product deletion observer for pre Zen Cart 1.5.3 operation to pass a null value to the standard observer code.</p>
+			<p class="RevisionHistoryEntry">[UPDATED] Admin category page display to use/recognize the Zen Cart 1.5.7 html format for selection groups.</p>
+			<p class="RevisionHistoryEntry">[BUGFIX] Admin product URI generation for PHP 7.x versions where expected information is not posted.</p>
+			<p class="RevisionHistoryEntry">[UPDATED] URI data generation and handling for the newly assigned parameter for the ask a question feature as modified for Zen Cart 1.5.7.</p>
+			<p class="RevisionHistoryEntry">[BUGFIX] URI Configuration window now transliterates proposed URI information.</p>
+			<p class="RevisionHistoryEntry">[BUGFIX] Restored installation check of admin setting of the catalog server constant for containing a sub-directory when it begins with https.</p>
+			<p class="RevisionHistoryEntry">[BUGFIX] Corrected notification of when required Ceon URI Mapping code is expected in includes/functions/html_output.php and admin/includes/functions/html_output.php.</p>
+			<p class="RevisionHistoryEntry">[BUGFIX] Default values for newly created date fields to align with MySQL requirements moving forwards.</p>
+			<p class="RevisionHistoryEntry">[UPDATED] Admin display of URIs to not include html encoded ampersands as Zen Cart 1.5.7 does not properly recognize the parameter when that link is followed.</p>
+			<p class="RevisionHistoryEntry">[UPDATED] Admin process of providing selections for product copying associated with the new Zen Cart 1.5.7 page format.</p>
+			<p class="RevisionHistoryEntry">[UPDATED] Observers to use/recognize the method naming added in Zen Cart 1.5.7.</p>
+			<p class="RevisionHistoryEntry">[UPDATED] Transliteration conversions identified for updates at https://www.drupal.org/project/transliteration/issues.</p>
+			<p class="RevisionHistoryEntry">[UPDATED] CeonString class method visibility.</p>
+			<p class="RevisionHistoryEntry RevisionHistoryLastEntry">[UPDATED] Removed the need to directly modify any Zen Cart core files as of Zen Cart 1.5.7. There is only one core file that is directly affected and it is only overridden.</p>
+		</td>
+	</tr>
+	<tr>
+		<td class="NoWrap"> 17th August 2019</td>
+		<td>5.0.1</td>
+		<td>
+			<p class="RevisionHistoryEntry">[ADDED] Preliminary files for Zen Cart 1.5.7.</p>
+			<p class="RevisionHistoryEntry">[BUGFIX] Admin presentation of catalog side addresses, including possibility that admin/includes/configure.php may be moved to the catalog side.</p>
+			<p class="RevisionHistoryEntry">[BUGFIX] Auto-generation of EZ-Page URI for Zen Cart 1.5.6+ when no ez-page name is provided..</p>
+			<p class="RevisionHistoryEntry">[BUGFIX] Restore cookie location control to Zen Cart when the module is disabled.</p>
+			<p class="RevisionHistoryEntry">[ADDED] Modification for the overridden Zen Cart 1.5.1 includes/functions/html_output.php file incorporated into other versions.</p>
+			<p class="RevisionHistoryEntry">[UPDATED] Zen Cart 1.5.5 copy to confirm file to match the distributed version.</p>
+			<p class="RevisionHistoryEntry">[UPDATED] The load point of the handler code to remain before the load point of init_sanitize (changed in Zen Cart 1.5.6c).</p>
+			<p class="RevisionHistoryEntry">[UPDATED] Additional locations that would issue notices in PHP strict mode.</p>
+			<p class="RevisionHistoryEntry RevisionHistoryLastEntry">[UPDATED] Javascript file to support being called by an observer such as available in Zen Cart 1.5.7.</p>
+		</td>
+	</tr>
+	<tr>
 		<td class="NoWrap"> 11th March 2019</td>
 		<td>5.0.0</td>
 		<td>
@@ -529,7 +569,7 @@ CeonAddLoadEvent(CeonCrossfadeInit);
 
 <p class="BackToTop"><a href="#top">Back to top</a></p>
 
-<p id="footer"><a href="http://ceon.net/software/business/zen-cart?doc=zc-um" target="_blank"><img src="../_images/ceon-button-logo.png" alt="Ceon" id="ceon-button-logo" /></a><a href="http://jked.net" target="_blank"><img src="../_images/jked-logo.gif" alt="JKED" id="jked-logo" /></a>Module &amp; Documentation &copy; Copyright 2008-2019 <a href="http://ceon.net/software/business/zen-cart?doc=zc-um" target="_blank">Ceon</a></p>
+<p id="footer"><a href="http://ceon.net/software/business/zen-cart?doc=zc-um" target="_blank"><img src="../_images/ceon-button-logo.png" alt="Ceon" id="ceon-button-logo" /></a><a href="http://jked.net" target="_blank"><img src="../_images/jked-logo.gif" alt="JKED" id="jked-logo" /></a>Module &amp; Documentation &copy; Copyright 2008-2020 <a href="http://ceon.net/software/business/zen-cart?doc=zc-um" target="_blank">Ceon</a></p>
 
 	</div>
 </div>

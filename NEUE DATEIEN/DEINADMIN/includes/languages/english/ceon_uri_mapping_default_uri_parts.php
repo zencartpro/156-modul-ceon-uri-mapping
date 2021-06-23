@@ -2,20 +2,20 @@
 
 /** 
  * Ceon URI Mapping Default Product Related Page URI Part Language Defines.
- *
+ * Zen Cart German Specific
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: ceon_uri_mapping_default_uri_parts.php 2019-07-04 17:31:10Z webchills $
+ * @version     $Id: ceon_uri_mapping_default_uri_parts.php 2021-06-23 12:54:10Z webchills $
  */
 
 /**
  * The language defines for the default URI part text to be used for the product related pages' URI
- * parts (the product reviews/tell-a-friend pages).
+ * parts (the product reviews pages).
  *
  * These defines are only used when installing or updating the module, as fallbacks, if the store
  * hasn't already specified custom URI part text for a language the store uses.
@@ -37,5 +37,3 @@
 define('DEFAULT_URI_PART_PRODUCT_REVIEWS_EN', 'Reviews');
 define('DEFAULT_URI_PART_REVIEWS_INFO_EN', 'Review');
 define('DEFAULT_URI_PART_REVIEWS_WRITE_EN', 'Add a Review');
-define('DEFAULT_URI_PART_TELL_A_FRIEND_EN', 'Tell a Friend');
-define('DEFAULT_URI_PART_ASK_A_QUESTION_EN', 'Ask a Question');

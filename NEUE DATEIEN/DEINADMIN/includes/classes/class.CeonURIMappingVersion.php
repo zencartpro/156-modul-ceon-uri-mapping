@@ -10,7 +10,7 @@
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingVersion.php 2019-07-04 17:20:15Z webchills $
+ * @version     $Id: class.CeonURIMappingVersion.php 2021-06-23 09:20:15Z webchills $
  */
 
 /**
@@ -61,7 +61,7 @@ class CeonURIMappingVersion extends CeonURIMappingTabbedPanelAdminInterface
 		// Set up the basic version settings for this module
 		$this->_ceon_base_model_code = 'S-ZC-UM';
 		
-		$this->_version = '5.0.0';
+		$this->_version = '5.1.0';
 		
 		$this->_copyright_start_year = 2008;
 		

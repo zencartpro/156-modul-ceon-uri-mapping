@@ -2,15 +2,15 @@
 
 /** 
  * Ceon URI Mapping Configuration Admin Language Defines.
- *
+ * Zen Cart German Specific
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: ceon_uri_mapping_config.php 2019-07-04 17:31:10Z webchills $
+ * @version     $Id: ceon_uri_mapping_config.php 2021-06-23 12:31:10Z webchills $
  */
 
 define('HEADING_TITLE', 'Ceon URI Mapping (SEO) Config');
@@ -63,8 +63,6 @@ define('TEXT_INSTRUCTIONS_AUTO_MANAGED_PRODUCT_URIS', 'Tick the page types which
 define('TEXT_LABEL_AUTO_MANAGED_URI_REVIEWS', 'Products\' Reviews Pages');
 define('TEXT_LABEL_AUTO_MANAGED_URI_REVIEW_INFO', 'Products\' Review Info Pages');
 define('TEXT_LABEL_AUTO_MANAGED_URI_WRITE_A_REVIEW', 'Products\' Write A Review Pages');
-define('TEXT_LABEL_AUTO_MANAGED_URI_TELL_A_FRIEND', 'Products\' Tell A Friend Pages');
-define('TEXT_LABEL_AUTO_MANAGED_URI_ASK_A_QUESTION', 'Products\' Ask A Question Pages');
 define('TEXT_LABEL_AUTO_MANAGED_PRODUCT_URIS_URI_PARTS', 'URI Parts Text:');
 define('TEXT_CONFIG_DESC_AUTO_MANAGED_PRODUCT_URIS_URI_PARTS', '<p>Enter the text to be used for the URI parts to be appended to the product URIs when auto-managing the respective pages.</p><p>Whenever a URI mapping is being created using these URI parts, the standard auto-generation rules (Whitespace Replacement, Capitalisation etc.) will be applied, so these URI parts\' text can contain spaces and capital letters, which will then be adjusted if necessary when creating a mapping, according to the store\'s settings above.</p>');
 

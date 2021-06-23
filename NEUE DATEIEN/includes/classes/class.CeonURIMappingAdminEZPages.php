@@ -8,11 +8,11 @@
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingAdminEZPages.php 1027 2012-07-17 20:31:10Z conor $
+ * @version     $Id: class.CeonURIMappingAdminEZPages.php 1028 2021-06-23 09:31:10Z webchills $
  */
 
 if (!defined('IS_ADMIN_FLAG')) {
@@ -77,19 +77,21 @@ class CeonURIMappingAdminEZPages extends CeonURIMappingAdmin
 	 */
 	public function autogenEZPageURIMapping($id, $name, $language_code, $language_id)
 	{
-		global $db;
+		global $db, $sniffer;
 		
 		if (is_null($name)) {
 			// Load name from database
+			$ez_page_table = (defined('TABLE_EZPAGES_CONTENT') && $sniffer->table_exists(TABLE_EZPAGES_CONTENT)) ? TABLE_EZPAGES_CONTENT : TABLE_EZPAGES;
+			
 			$ez_page_name_result = $db->Execute("
 				SELECT
 					pages_title
 				FROM
-					" . TABLE_EZPAGES . "
+					" . $ez_page_table . "
 				WHERE
-					pages_id = '" . (int) $id . "'
+					pages_id = " . (int) $id . "
 				AND
-					languages_id = '" . (int) $language_id . "'");
+					languages_id = " . (int) $language_id);
 			
 			$ez_page_name = $ez_page_name_result->fields['pages_title'];
 			

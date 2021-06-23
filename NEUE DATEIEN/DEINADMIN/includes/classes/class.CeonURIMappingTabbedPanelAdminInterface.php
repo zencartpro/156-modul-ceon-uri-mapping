@@ -6,11 +6,11 @@
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingTabbedPanelAdminInterface.php 2019-07-04 18:45:15Z webchills $
+ * @version     $Id: class.CeonURIMappingTabbedPanelAdminInterface.php 2021-06-23 09:45:15Z webchills $
  */
 
 if (!defined('IS_ADMIN_FLAG')) {
@@ -324,7 +324,7 @@ TABBED_PANELS_MENU_JS;
 			if (is_null($panel['link'])) {
 				$this->_output .= '<a href="javascript:CeonShowPanel(' . "'" . $panel['id'] . "'" . ');">';
 			} else {
-				$this->_output .= '<a href="' . htmlspecialchars($panel['link']) . '">';
+				$this->_output .= '<a href="' . str_replace('&amp;', '&', htmlspecialchars($panel['link'])) . '">';
 			}
 			
 			$this->_output .= str_replace(' ', '&nbsp;', htmlentities($panel['title'])) . '</a>';

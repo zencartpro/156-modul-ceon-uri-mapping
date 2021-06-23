@@ -2,17 +2,17 @@
 
 /**
  * Ceon URI Mapping Product URI Mappings Admin Functionality.
- *
+ * Zen Cart German Specific
  * This file contains a class with the methods necessary to handle URI mappings for products.
  *
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingAdminProducts.php 1054 2012-09-22 15:45:15Z conor $
+ * @version     $Id: class.CeonURIMappingAdminProducts.php 1055 2021-06-23 13:45:15Z webchills $
  */
 
 if (!defined('IS_ADMIN_FLAG')) {
@@ -84,9 +84,7 @@ class CeonURIMappingAdminProducts extends CeonURIMappingAdminCategoriesProducts
 				SELECT
 					manage_product_reviews_mappings,
 					manage_product_reviews_info_mappings,
-					manage_product_reviews_write_mappings,
-					manage_tell_a_friend_mappings,
-					manage_ask_a_question_mappings
+					manage_product_reviews_write_mappings					
 				FROM
 					" . TABLE_CEON_URI_MAPPING_CONFIGS . "
 				WHERE
@@ -101,11 +99,7 @@ class CeonURIMappingAdminProducts extends CeonURIMappingAdminCategoriesProducts
 					'product_reviews_info' =>
 						$automanage_enabled_result->fields['manage_product_reviews_info_mappings'],
 					'product_reviews_write' =>
-						$automanage_enabled_result->fields['manage_product_reviews_write_mappings'],
-					'tell_a_friend' =>
-						$automanage_enabled_result->fields['manage_tell_a_friend_mappings'],
-					'ask_a_question' =>
-						$automanage_enabled_result->fields['manage_ask_a_question_mappings']
+						$automanage_enabled_result->fields['manage_product_reviews_write_mappings']					
 					);
 			}
 		}
@@ -144,9 +138,7 @@ class CeonURIMappingAdminProducts extends CeonURIMappingAdminCategoriesProducts
 			$page_types = array(
 				'product_reviews',
 				'product_reviews_info',
-				'product_reviews_write',
-				'tell_a_friend',
-				'ask_a_question'
+				'product_reviews_write'				
 				);
 			
 			$page_types_sql_string = '';

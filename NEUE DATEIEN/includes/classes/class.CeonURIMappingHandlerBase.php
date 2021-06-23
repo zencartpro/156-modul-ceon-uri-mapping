@@ -6,11 +6,11 @@
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingHandlerBase.php 1027 2012-07-17 20:31:10Z conor $
+ * @version     $Id: class.CeonURIMappingHandlerBase.php 1028 2021-06-23 10:01:10Z webchills $
  */
 
 if (!defined('IS_ADMIN_FLAG')) {
@@ -180,7 +180,7 @@ class CeonURIMappingHandlerBase extends CeonURIMappingDBLookup
 			
 			$PHP_SELF = preg_replace('/(\?.*)?$/', '', $_SERVER['REQUEST_URI']);
 			
-		} else if (isset($_SERVER['DOCUMENT_ROOT']) && strpos($PHP_SELF, $_SERVER['DOCUMENT_ROOT']) !== false) {
+		} else if (!empty($_SERVER['DOCUMENT_ROOT']) && strpos($PHP_SELF, $_SERVER['DOCUMENT_ROOT']) !== false) {
 			// Server has incorrectly built the full path to the file for the value of PHP_SELF, must correct it by
 			// removing the root path part
 			$PHP_SELF = str_replace($_SERVER['DOCUMENT_ROOT'], '', $PHP_SELF);

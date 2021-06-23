@@ -7,11 +7,11 @@
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingInstallOrUpgrade.php 2019-07-04 17:20:05Z webchills $
+ * @version     $Id: class.CeonURIMappingInstallOrUpgrade.php 2021-06-23 09:20:05Z webchills $
  */
 
 
@@ -219,7 +219,7 @@ class CeonURIMappingInstallOrUpgrade
 					`associated_db_id` INT(11) UNSIGNED DEFAULT NULL,
 					`alternate_uri` VARCHAR(255) DEFAULT NULL,
 					`redirection_type_code` VARCHAR(3) DEFAULT '301',
-					`date_added` DATETIME NOT NULL DEFAULT '0001-01-01 00:00:00',
+					`date_added` DATETIME DEFAULT NULL,
 					INDEX `assoc_db_id_idx` (`language_id`, `current_uri`, `main_page`, `associated_db_id`)
 					);";
 			
@@ -272,8 +272,6 @@ class CeonURIMappingInstallOrUpgrade
 					`manage_product_reviews_mappings` INT(1) UNSIGNED DEFAULT 1,
 					`manage_product_reviews_info_mappings` INT(1) UNSIGNED DEFAULT 1,
 					`manage_product_reviews_write_mappings` INT(1) UNSIGNED DEFAULT 1,
-					`manage_tell_a_friend_mappings` INT(1) UNSIGNED DEFAULT 1,
-					`manage_ask_a_question_mappings` INT(1) UNSIGNED DEFAULT 1,
 					`automatic_version_checking` INT(1) UNSIGNED DEFAULT 1,
 					PRIMARY KEY (`id`)
 					);";
@@ -357,7 +355,7 @@ class CeonURIMappingInstallOrUpgrade
 	 * Makes sure that every language has values for all the product related pages URI parts.
 	 *
 	 * @access  protected
-	 * @return  none
+	 * @return  void
 	 */
 	protected function _checkProductRelatedPagesURIPartsExistForLanguages()
 	{
@@ -369,9 +367,7 @@ class CeonURIMappingInstallOrUpgrade
 		$page_types = array(
 			'product_reviews',
 			'product_reviews_info',
-			'product_reviews_write',
-			'tell_a_friend',
-			'ask_a_question'
+			'product_reviews_write'
 			);
 		
 		// Variable holds the list of URIs parts for each language as currently specified in the database
@@ -477,15 +473,7 @@ class CeonURIMappingInstallOrUpgrade
 				isset($default_uri_parts[$default_language_code]['product_reviews_write']) ?
 				$default_uri_parts[$default_language_code]['product_reviews_write'] :
 				isset($default_uri_parts['en']['product_reviews_write']) ?
-				$default_uri_parts['en']['product_reviews_write'] : 'Write a Review',
-			'tell_a_friend' => isset($default_uri_parts[$default_language_code]['tell_a_friend']) ?
-				$default_uri_parts[$default_language_code]['tell_a_friend'] :
-				isset($default_uri_parts['en']['tell_a_friend']) ?
-				$default_uri_parts['en']['tell_a_friend'] : 'Tell a Friend',
-			'ask_a_question' => isset($default_uri_parts[$default_language_code]['ask_a_question']) ?
-				$default_uri_parts[$default_language_code]['ask_a_question'] :
-				isset($default_uri_parts['en']['ask_a_question']) ?
-				$default_uri_parts['en']['ask_a_question'] : 'Ask a Question'
+				$default_uri_parts['en']['product_reviews_write'] : 'Write a Review'			
 			);
 		
 		// Populate any missing URI parts for any language
@@ -700,7 +688,7 @@ class CeonURIMappingInstallOrUpgrade
 				ALTER TABLE
 					" . TABLE_CEON_URI_MAPPINGS . "
 				ADD
-					`date_added` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'
+					`date_added` DATETIME DEFAULT NULL
 				AFTER
 					`redirection_type_code`;";
 			
@@ -773,6 +761,52 @@ class CeonURIMappingInstallOrUpgrade
 			$version_3_table_updated = true;
 		}
 		
+		if (in_array('date_added', $columns)) {
+			// Verify that the column allows null values
+			$columns_query = 'SHOW COLUMNS FROM ' . TABLE_CEON_URI_MAPPINGS . ';';
+			$columns_result = $db->Execute($columns_query);
+			
+			while (!$columns_result->EOF) {
+				if ($columns_result->fields['Field'] == 'date_added') {
+					if ($columns_result->fields['Null'] == "NO") {
+						$update_column_sql = "
+							ALTER TABLE
+								" . TABLE_CEON_URI_MAPPINGS . "
+							MODIFY COLUMN
+								`date_added` DATETIME DEFAULT NULL;";
+						
+						$update_column_result = $db->Execute($update_column_sql);
+						
+						$this->_actions_performed = true;
+						
+						$version_4_updated = true;
+					}
+					
+					$column_data_sql = "SELECT date_added FROM
+						" . TABLE_CEON_URI_MAPPINGS . "
+						WHERE date_added <= '0001-01-01 00:00:00' AND
+						date_added IS NOT NULL;";
+					$column_data_result = $db->Execute($column_data_sql);
+					
+					if (!$column_data_result->EOF) {
+						$update_data_sql = "UPDATE
+							" . TABLE_CEON_URI_MAPPINGS . "
+							SET date_added = NULL WHERE date_added <= '0001-01-01 00:00:00' AND
+							date_added IS NOT NULL;";
+						
+						$update_data_result = $db->Execute($update_data_sql);
+						
+						$this->_actions_performed = true;
+						
+						$version_4_updated = true;
+					}
+					
+					break;
+				}
+				$columns_result->MoveNext();
+			}
+		}
+		
 		// Add the index if it doesn't exist
 		$indexes_exist_query = 'SHOW INDEXES FROM ' . TABLE_CEON_URI_MAPPINGS . ';';
 		$indexes_exist_result = $db->Execute($indexes_exist_query);
@@ -806,7 +840,10 @@ class CeonURIMappingInstallOrUpgrade
 			$version_3_table_updated = true;
 		}
 		
-		if (isset($version_3_updated)) {
+		if (isset($version_4_updated)) {
+			$messageStack->add('Mappings database table successfully updated from old version 4.x format.',
+				'success');
+		} else if (isset($version_3_updated)) {
 			$messageStack->add('Mappings database table successfully updated from old version 3.x format.',
 				'success');
 		} else if (isset($version_2_updated)) {
@@ -907,9 +944,7 @@ class CeonURIMappingInstallOrUpgrade
 				$page_types = array(
 					'product_reviews',
 					'product_reviews_info',
-					'product_reviews_write',
-					'tell_a_friend',
-					'ask_a_question'
+					'product_reviews_write'
 					);
 				
 				// Get the language code for the mapping's language
@@ -1126,18 +1161,6 @@ class CeonURIMappingInstallOrUpgrade
 			$add_column_result = $db->Execute($add_column_sql);
 		}
 		
-		if (!in_array('manage_product_reviews_mappings', $columns)) {
-			$add_column_sql = "
-				ALTER TABLE
-					" . TABLE_CEON_URI_MAPPING_CONFIGS . "
-				ADD
-					`manage_product_reviews_mappings` INT(1) UNSIGNED DEFAULT 1
-				AFTER
-					`mapping_clash_action`;";
-			
-			$add_column_result = $db->Execute($add_column_sql);
-		}
-		
 		if (!in_array('manage_product_reviews_info_mappings', $columns)) {
 			$add_column_sql = "
 				ALTER TABLE
@@ -1160,33 +1183,8 @@ class CeonURIMappingInstallOrUpgrade
 					`manage_product_reviews_info_mappings`;";
 			
 			$add_column_result = $db->Execute($add_column_sql);
-		}
+		}		
 		
-		
-		if (!in_array('manage_tell_a_friend_mappings', $columns)) {
-			$add_column_sql = "
-				ALTER TABLE
-					" . TABLE_CEON_URI_MAPPING_CONFIGS . "
-				ADD
-					`manage_tell_a_friend_mappings` INT(1) UNSIGNED DEFAULT 1
-				AFTER
-					`manage_product_reviews_write_mappings`;";
-			
-			$add_column_result = $db->Execute($add_column_sql);
-		}
-		
-		
-		if (!in_array('manage_ask_a_question_mappings', $columns)) {
-			$add_column_sql = "
-				ALTER TABLE
-					" . TABLE_CEON_URI_MAPPING_CONFIGS . "
-				ADD
-					`manage_ask_a_question_mappings` INT(1) UNSIGNED DEFAULT 1
-				AFTER
-					`manage_tell_a_friend_mappings`;";
-			
-			$add_column_result = $db->Execute($add_column_sql);
-		}
 		
 		if (!in_array('automatic_version_checking', $columns)) {
 			$add_column_sql = "
@@ -1224,7 +1222,7 @@ class CeonURIMappingInstallOrUpgrade
 	 * Makes sure that the default configuration exists. If not, it is created.
 	 *
 	 * @access  protected
-	 * @return  none
+	 * @return  void
 	 */
 	protected function _checkForDefaultConfig()
 	{
@@ -1260,9 +1258,7 @@ class CeonURIMappingInstallOrUpgrade
 				mapping_clash_action,
 				manage_product_reviews_mappings,
 				manage_product_reviews_info_mappings,
-				manage_product_reviews_write_mappings,
-				manage_tell_a_friend_mappings,
-				manage_ask_a_question_mappings,
+				manage_product_reviews_write_mappings,				
 				automatic_version_checking
 				)
 			VALUES
@@ -1278,9 +1274,7 @@ class CeonURIMappingInstallOrUpgrade
 				'warn',
 				'1',
 				'1',
-				'1',
-				'0',
-				'0',
+				'1',			
 				'1'
 				);";
 		
@@ -1299,7 +1293,7 @@ class CeonURIMappingInstallOrUpgrade
 	 * default.
 	 *
 	 * @access  protected
-	 * @return  none
+	 * @return  void
 	 */
 	protected function _changeDefaultRemoveWordsSetting()
 	{

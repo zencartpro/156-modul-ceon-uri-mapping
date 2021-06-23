@@ -7,23 +7,21 @@
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @author      torvista
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2007 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        https://github.com/torvista/CEON-URI-Mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     2016
+ * @version     2021
  */
 class CeonUriMappingLinkBuild extends base
 {
 		public function __construct()
 		{
 				$this->attach($this, array('NOTIFY_SEFU_INTERCEPT'));//OOP. Called from function zen_href_link (html_output.php)
-				//global $zco_notifier;//if notifier is in procedural code
-				//$zco_notifier->attach($this, array('NOTIFY_SEFU_INTERCEPT'));
 		
 		}
 		
-		public function updateNotifySefuIntercept(&$callingClass, $notifier, $p1, &$link, $page, $parameters, $connection, $add_session_id, $static, &$use_dir_ws_catalog)//& required for &$link to modify it inside here
+		public function notify_sefu_intercept(&$callingClass, $notifier, $p1, &$link, $page, $parameters, $connection, $add_session_id, $static, &$use_dir_ws_catalog)//& required for &$link to modify it inside here
 		{
 				if (!(defined('CEON_URI_MAPPING_ENABLED') && CEON_URI_MAPPING_ENABLED == 1 && $static == false)) {
 					return;
@@ -49,13 +47,19 @@ class CeonUriMappingLinkBuild extends base
 				}
 		}
 		
+		public function updateNotifySefuIntercept(&$callingClass, $notifier, $p1, &$link, $page, $parameters, $connection, $add_session_id, $static, &$use_dir_ws_catalog)//& required for &$link to modify it inside here
+		{
+				$this->notify_sefu_intercept($callingClass, $notifier, $p1, $link, $page, $parameters, $connection, $add_session_id, $static, $use_dir_ws_catalog);
+		}
+		
+		// Additional parameters are not provided a default value because this notifier is not expected for less than Zen Cart 1.5.3 and if it is used then it would need to address the additional parameters.
 		public function update(&$callingClass, $notifier, $p1, &$link, $page, $parameters, $connection, $add_session_id, $static, &$use_dir_ws_catalog)//& required for &$link to modify it inside here
 		{
 				if (!(defined('CEON_URI_MAPPING_ENABLED') && CEON_URI_MAPPING_ENABLED == 1 && $static == false)) {
-					trigger_error('closed', E_USER_WARNING);
+					//trigger_error('closed', E_USER_WARNING);
 					return;
 				}
 				
-				$this->updateNotifySefuIntercept($callingClass, $notifier, $p1, $link, $page, $parameters, $connection, $add_session_id, $static, $use_dir_ws_catalog);
+				$this->notify_sefu_intercept($callingClass, $notifier, $p1, $link, $page, $parameters, $connection, $add_session_id, $static, $use_dir_ws_catalog);
 		}
 }

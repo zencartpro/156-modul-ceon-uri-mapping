@@ -2,15 +2,15 @@
 
 /**
  * Ceon URI Mapping Installation Check Class.
- *
+ * Zen Cart German Specific
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingInstallationCheck.php 2019-07-04 16:45:15Z webchills $
+ * @version     $Id: class.CeonURIMappingInstallationCheck.php 2021-06-23 09:45:15Z webchills $
  */
 
 /**
@@ -186,7 +186,7 @@ class CeonURIMappingInstallationCheck extends CeonURIMappingVersion
 	{
 		// Check the admin's configure settings first.. they'll already be defined as this is called
 		// from within the admin
-		if (preg_match('|^http://[a-z0-9\-\.]+/.+$|i', HTTP_CATALOG_SERVER)) {
+		if (preg_match('|^https?://[a-z0-9\-\.]+/.+$|i', HTTP_CATALOG_SERVER)) {
 			$this->_config_files_error_messages[] = array(
 				'initial_desc' =>
 					sprintf(TEXT_ERROR_VALUE_FOR_ADMIN_SERVER_VARIABLE, 'HTTP_CATALOG_SERVER'),
@@ -436,7 +436,7 @@ class CeonURIMappingInstallationCheck extends CeonURIMappingVersion
 				$dir_ws_https_catalog = $matches[1];
 			}
 			
-			if (preg_match('|^http://[a-z0-9\-\.]+/.+$|i', $http_server)) {
+			if (preg_match('|^https?://[a-z0-9\-\.]+/.+$|i', $http_server)) {
 				$this->_config_files_error_messages[] = array(
 					'initial_desc' =>
 						sprintf(TEXT_ERROR_VALUE_FOR_SERVER_VARIABLE, 'HTTP_SERVER'),
@@ -1229,6 +1229,14 @@ class CeonURIMappingInstallationCheck extends CeonURIMappingVersion
 				),
 			'min_version_rem' => array(
 				'1.3.8'
+				),
+			);
+		
+		$core_file_modifications[] = array(
+			'path' => DIR_FS_CATALOG . DIR_WS_INCLUDES . 'extra_datafiles/ceon_uri_mapping_sessions_define.php',
+			'num_mods' => 0,
+			'old_snippets' => array(
+				'define(\'CUSTOM_COOKIE_PATH\', \'/\')',
 				),
 			);
 		

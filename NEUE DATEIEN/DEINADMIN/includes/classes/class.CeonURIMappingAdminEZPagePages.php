@@ -8,11 +8,11 @@
  * @package     ceon_uri_mapping
  * @author      Conor Kerr <zen-cart.uri-mapping@ceon.net>
  * @copyright   Copyright 2008-2019 Ceon
- * @copyright   Copyright 2003-2019 Zen Cart Development Team
+ * @copyright   Copyright 2003-2021 Zen Cart Development Team
  * @copyright   Portions Copyright 2003 osCommerce
  * @link        http://ceon.net/software/business/zen-cart/uri-mapping
  * @license     http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version     $Id: class.CeonURIMappingAdminEZPagePages.php 2019-07-05 07:45:15Z webchills $
+ * @version     $Id: class.CeonURIMappingAdminEZPagePages.php 2021-06-23 09:32:15Z webchills $
  */
 
 if (!defined('IS_ADMIN_FLAG')) {
@@ -120,7 +120,7 @@ class CeonURIMappingAdminEZPagePages extends CeonURIMappingAdminEZPages
 		$languages = zen_get_languages();
 		
 		for ($i = 0, $n = count($languages); $i < $n; $i++) {
-			$prev_uri_mapping = trim($_POST['prev-uri-mappings'][$languages[$i]['id']]);
+			$prev_uri_mapping = (isset($_POST['prev-uri-mappings'][$languages[$i]['id']])) ? trim($_POST['prev-uri-mappings'][$languages[$i]['id']]) : '';
 			
 			// Handle multilanguage EZ-Pages 
 			if (!is_null($page_titles_array)) {
@@ -142,7 +142,7 @@ class CeonURIMappingAdminEZPagePages extends CeonURIMappingAdminEZPages
 					continue;
 				}
 			} else {
-				$uri_mapping = $_POST['uri-mappings'][$languages[$i]['id']];
+				$uri_mapping = (isset($_POST['uri-mappings'][$languages[$i]['id']])) ? $_POST['uri-mappings'][$languages[$i]['id']] : '';
 			}
 			
 			if (strlen($uri_mapping) > 1) {
@@ -403,16 +403,15 @@ class CeonURIMappingAdminEZPagePages extends CeonURIMappingAdminEZPages
 		
 		$num_languages = sizeof($languages);
 		
-		$uri_mapping_input_fields = zen_draw_separator('pixel_black.gif', '100%', '2');
+		$uri_mapping_input_fields = '';
 		
-		$uri_mapping_input_fields .= "\n\t\t" . '<div class="form-group">' . "\n\t\t\t";
-
-		$uri_mapping_input_fields .= zen_draw_label(CEON_URI_MAPPING_TEXT_EZ_PAGE_URI, 'uri-mappings', 'class="col-sm-3 control-label"') . "\n\t\t\t";
-
-		$uri_mapping_input_fields .= '<div class="col-sm-9 col-md-6">' . "\n\t\t\t\t";
+		$uri_mapping_input_fields .= zen_draw_separator('pixel_trans.gif', '1', '10') . '
+				' . zen_draw_separator('pixel_black.gif', '100%', '2') . 
+				zen_draw_label(CEON_URI_MAPPING_TEXT_EZ_PAGE_URI, 'uri-mappings', 'class ="col-sm-3 control label"') . '
+				<div class="col-sm-9 col-md-6"><div class="input-group">' . "\n";
 		
 		for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
-			$uri_mapping_input_fields .= '<div class="input-group">' . "\n\t\t\t\t\t";
+			$uri_mapping_input_fields .= '<span class="input-group-addon">';
 			
 			if (!isset($this->_prev_uri_mappings[$languages[$i]['id']])) {
 				$this->_prev_uri_mappings[$languages[$i]['id']] = '';
@@ -425,22 +424,15 @@ class CeonURIMappingAdminEZPagePages extends CeonURIMappingAdminEZPages
 			$uri_mapping_input_fields .= zen_draw_hidden_field('prev-uri-mappings[' . $languages[$i]['id'] . ']',
 				$this->_prev_uri_mappings[$languages[$i]['id']]);
 			
-			$uri_mapping_input_fields .= "\n\t\t\t\t\t";
-			$uri_mapping_input_fields .= '<div class="input-group">' . "\n\t\t\t\t\t\t";
-			$uri_mapping_input_fields .= '<span class="input-group-addon">' . "\n\t\t\t\t\t\t\t";
-;
 			$uri_mapping_input_fields .= zen_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] .
 				'/images/' . $languages[$i]['image'], $languages[$i]['name']) . '</span>' .
 				zen_draw_input_field('uri-mappings[' . $languages[$i]['id'] . ']',
 				$this->_uri_mappings[$languages[$i]['id']], 'style="width:100%" class="form-control"');
-
-
 			
-			$uri_mapping_input_fields .= "\n\t\t\t\t\t" . "</div>" . "\n\t\t\t\t";
-			$uri_mapping_input_fields .= "</div>" . "\n\t\t\t\t";
+			$uri_mapping_input_fields .= "</div>\n";
 		}
 		
-		$uri_mapping_input_fields .= "<p>" . "\n\t\t\t\t\t";
+		$uri_mapping_input_fields .= '<br><div class="input-group">';
 		
 		if ($this->_autogenEnabled()) {
 			if ($num_languages == 1) {
@@ -473,16 +465,13 @@ class CeonURIMappingAdminEZPagePages extends CeonURIMappingAdminEZPages
 			$uri_mapping_input_fields .= CEON_URI_MAPPING_TEXT_URI_AUTOGEN_DISABLED;
 		}
 		
-		$uri_mapping_input_fields .= "\n\t\t\t\t";
+		$uri_mapping_input_fields .= "</div><br>";
 		
-		$uri_mapping_input_fields .= "</p>";
+		$uri_mapping_input_fields .= "\n\t\t</div>";
 		
-		$uri_mapping_input_fields .= "\n\t\t\t</div>\n\t\t</div>\n\t";
-		
-		$uri_mapping_input_fields .= zen_draw_separator('pixel_black.gif', '100%', '2');
-		
-		$uri_mapping_input_fields .= "\n";
-		
+		$uri_mapping_input_fields .= '
+				' . zen_draw_separator('pixel_black.gif', '100%', '2') . '
+				';
 		return $uri_mapping_input_fields;
 	}
 	
