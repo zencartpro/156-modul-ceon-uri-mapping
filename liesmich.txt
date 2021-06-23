@@ -6,22 +6,22 @@ Anders als bei anderen Modulen dieser Art, erfolgt das Umschreiben nicht automat
 Version 5.1.0 ist ausschließlich für Zen Cart 1.5.6 deutsch geeignet
 
 Changelog 5.1.0
-Juni 2021
+Juni 2021 - webchills
 Aktualisierungen von ceon.net Modul 5.1.0 übernommen
-Veraltete und unpassende tell a friend und ask a question Funktionen entfernt
+Veraltete und unpassende tell a friend und ask a question Funktionen komplett entfernt
 Geänderte Dateien auf den Stand von 1.5.6f gebracht
 
 Changelog 5.0.1
-Juli 2020
+Juli 2020 - webchills
 Geänderte Datei html_header.php auf den Stand von 1.5.6e gebracht
 Fix für too many redirects bei HostEurope
 ENABLE_SSL_CATALOG statt ENABLE_SSL
 
 Changelog 5.0.0
-Juli 2019
+Juli 2019 - webchills
 Komplette Überarbeitung des Moduls durch das CEON Team für Kompatibilität mit 1.5.6 und PHP 7.3
 Fast keine Änderung von Corefiles mehr nötig
-Anpassungen für Zne Cart 1.5.6 deutsch
+Anpassungen für Zen Cart 1.5.6 deutsch
 Nicht funktionierenden Update Check entfernt
 Anleitung aktualisiert
 
@@ -51,6 +51,13 @@ Oder einfach das automatische Vergeben einer URL angekreuzt lassen (Tick this bo
 
 
 NEUINSTALLATION
+
+================= WICHTIG =====================
+Bevor Sie Ihren 1.5.6 Shop weiter modifizieren, stellen Sie erst sicher, dass Sie die neueste 1.5.6 Version verwenden.
+Das ist derzeit 1.5.6f
+Sollten Sie noch 1.5.6e verwenden, aktualisieren Sie Ihren Shop zunächst auf 1.5.6f, bevor Sie dieses Modul installieren.
+Die mitgelieferten GEAENDERTEN DATEIEN dieses Moduls sind auf dem Stand von 1.5.6f
+=================================================
 
 Dieses Modul ist nur für Zen Cart 1.5.6 deutsch geeignet und ändert einige wichtige Corefiles.
 Es ist kein Modul, das Sie in 2 Minuten einfach hochladen können.
@@ -134,3 +141,17 @@ Die gewünschten Links für solche Define Pages können direkt in der Datenbank 
 ceon.net bietet dazu auch ein kostenpflichtiges Zusatzmodul an (URI Mapping Manager)
 
 Lesen Sie die umfangreiche Doku im Ordner DOKU ENGLISCH, um sich mit dem Modul und seinen Möglichkeiten vertraut zu machen.
+
+____________________________________________________________________________________________________________________________________________
+
+UPDATE VON VERSION 5.0.0 oder 5.0.1 auf 5.1.0
+
+Wenn Sie in Ihrem 1.5.6 Shop bereits das CEON URI Mapping Modul 5.0.1 oder 5.0.0 verwenden, dann können Sie einfach auf 5.1.0 aktualisieren
+Gehen Sie dazu genauso vor wie unter Neuinstallation beschrieben.
+Einzige Ausnahme:
+Punkt 1 lassen Sie natürlich weg, denn Sie haben ja bereits die zusätzlichen CEON URI Mapping Datenbanktabellen in Ihrer Datenbank
+Nach dem Hochladen der Dateien gehen Sie auf den Menüpunkt Module > CEON URI Mapping (SEO) Config
+Dort werden Sie dann sehen, dass das Modul automatisch auf 5.1.0 aktualisiert wurde.
+Löschen Sie nun noch folgende Datei falls vorhanden:
+includes/extra_datafiles/ceon_uri_mapping_sessions_define.php
+Sie wird in 5.1.0 nicht mehr benötigt

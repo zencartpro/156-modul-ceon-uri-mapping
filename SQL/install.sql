@@ -20,8 +20,6 @@ CREATE TABLE IF NOT EXISTS ceon_uri_mapping_configs (
 `manage_product_reviews_info_mappings` INT(1) UNSIGNED DEFAULT 1,
 `manage_product_reviews_write_mappings` INT(1) UNSIGNED DEFAULT 1,
 `automatic_version_checking` INT(1) UNSIGNED DEFAULT 1,
-`manage_tell_a_friend_mappings` INT(1) UNSIGNED DEFAULT 1,
-`manage_ask_a_question_mappings` INT(1) UNSIGNED DEFAULT 1,
 PRIMARY KEY (`id`)
 ) ENGINE=MyISAM;
 
